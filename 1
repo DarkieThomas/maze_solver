@@ -1,0 +1,14 @@
+[Unit]
+Description=GPIO Button Launcher
+After=multi-user.target
+
+[Service]
+Type=simple
+User=darkie
+WorkingDirectory=/home/darkie/ros2_ws
+ExecStart=/usr/bin/python3 /home/darkie/ros2_ws/button_start.py
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
