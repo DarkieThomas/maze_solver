@@ -27,3 +27,18 @@ darkie@Darkie32:~/ros2_ws$ i2cdetect -y 1
 50: 50 51 52 53 54 55 56 57 58 59 5a 5b 5c 5d 5e 5f 
 60: 60 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 
 70: 70 71 72 73 74 75 76 77  
+
+ button.service - GPIO Button Launcher
+     Loaded: loaded (/etc/systemd/system/button.service; enabled; vendor preset: enabled)
+     Active: failed (Result: exit-code) since Thu 2026-05-14 01:47:14 +07; 43s ago
+    Process: 2730 ExecStart=/usr/bin/python3 /home/darkie/ros2_ws/button_start.py (code=exited, status=2)
+   Main PID: 2730 (code=exited, status=2)
+        CPU: 347ms
+
+May 14 01:47:14 Darkie32 systemd[1]: button.service: Scheduled restart job, restart counter is at 5.
+May 14 01:47:14 Darkie32 systemd[1]: Stopped GPIO Button Launcher.
+May 14 01:47:14 Darkie32 systemd[1]: button.service: Start request repeated too quickly.
+May 14 01:47:14 Darkie32 systemd[1]: button.service: Failed with result 'exit-code'.
+May 14 01:47:14 Darkie32 systemd[1]: Failed to start GPIO Button Launcher.
+
+
