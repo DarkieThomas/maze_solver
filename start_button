@@ -1,0 +1,20 @@
+from gpiozero import Button
+from signal import pause
+import subprocess
+
+button = Button(17, pull_up=True)
+
+def start_program():
+
+    print("Button pressed")
+
+    subprocess.Popen([
+        "python3",
+        "/home/darkie/ros2_ws/test.py"
+    ])
+
+button.when_pressed = start_program
+
+print("Waiting button...")
+
+pause()
