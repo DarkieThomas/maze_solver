@@ -1,37 +1,34 @@
 import time
-import board
-import busio
-import adafruit_vl53l0x
-
+import VL53L0X
 from smbus2 import SMBus
 
-# Адрес TCA9548A
 TCA_ADDR = 0x70
 
-# Открываем I2C
-i2c = busio.I2C(board.SCL, board.SDA)
-
-# SMBus для управления мультиплексором
 bus = SMBus(1)
 
 def select_channel(channel):
-    """
-    Выбор канала TCA9548A
-    """
     bus.write_byte(TCA_ADDR, 1 << channel)
     time.sleep(0.01)
 
-# Создаем объекты датчиков
 sensors = []
 
 for ch in range(3):
+
     select_channel(ch)
 
-    sensor = adafruit_vl53l0x.VL53L0X(i2c)
+    sensor = VL53L0X.VL53L0X(
+        i2c_bus=1,
+        i2c_address=0x29
+    )
+
+    sensor.open()
+    sensor.start_ranging(
+        VL53L0X.Vl53l0xAccuracyMode.BEST
+    )
 
     sensors.append(sensor)
 
-print("Датчики инициализированы")
+print("Sensors initialized")
 
 while True:
 
@@ -39,10 +36,10 @@ while True:
 
         select_channel(ch)
 
-        distance = sensors[ch].range
+        distance = sensors[ch].get_distance()
 
         print(f"Sensor {ch}: {distance} mm")
 
-    print("-----")
+    print("------")
 
-    time.sleep(0.5)
+    time.sleep(0.2)
