@@ -1,19 +1,36 @@
 from gpiozero import Button
 from signal import pause
 import subprocess
+import os
+import signal
 
 button = Button(17, pull_up=True)
 
-def start_program():
+process = None
 
-    print("Button pressed")
+def toggle_program():
 
-    subprocess.Popen([
-        "python3",
-        "/home/darkie/ros2_ws/test.py"
-    ])
+    global process
 
-button.when_pressed = start_program
+    # Если программа НЕ запущена
+    if process is None or process.poll() is not None:
+
+        print("Starting program...")
+
+        process = subprocess.Popen([
+            "python3",
+            "/home/darkie/ros2_ws/test.py"
+        ])
+
+    else:
+
+        print("Stopping program...")
+
+        os.kill(process.pid, signal.SIGTERM)
+
+        process = None
+
+button.when_pressed = toggle_program
 
 print("Waiting button...")
 
