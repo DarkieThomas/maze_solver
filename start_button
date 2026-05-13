@@ -1,37 +1,48 @@
 from gpiozero import Button
 from signal import pause
-import subprocess
-import os
-import signal
 
-button = Button(17, pull_up=True)
+STATE_FILE = "/tmp/robot_state"
 
-process = None
+button = Button(
+    17,
+    pull_up=True,
+    bounce_time=0.2
+)
 
-def toggle_program():
+def toggle():
+    try:
+        with open(STATE_FILE, "r") as f:
+            state = f.read().strip()
+    except:
+        state = "0"
 
-    global process
+    state = "1" if state == "0" else "0"
 
-    # Если программа НЕ запущена
-    if process is None or process.poll() is not None:
+    with open(STATE_FILE, "w") as f:
+        f.write(state)
 
-        print("Starting program...")
+    print("STATE =", state)
 
-        process = subprocess.Popen([
-            "python3",
-            "/home/darkie/ros2_ws/test.py"
-        ])
+button.when_pressed = toggle
 
-    else:
-
-        print("Stopping program...")
-
-        os.kill(process.pid, signal.SIGTERM)
-
-        process = None
-
-button.when_pressed = toggle_program
-
-print("Waiting button...")
-
+print("Button ready")
 pause()
+
+//
+
+import time
+
+STATE_FILE = "/tmp/robot_state"
+
+def is_running():
+    try:
+        return open(STATE_FILE).read().strip() == "1"
+    except:
+        return False
+
+
+
+
+
+
+
