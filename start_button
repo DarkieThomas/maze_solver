@@ -4,7 +4,7 @@ from signal import pause
 STATE_FILE = "/tmp/robot_state"
 
 button = Button(
-    17,
+    27,
     pull_up=True,
     bounce_time=0.2
 )
@@ -27,22 +27,3 @@ button.when_pressed = toggle
 
 print("Button ready")
 pause()
-
-//
-
-import time
-
-STATE_FILE = "/tmp/robot_state"
-
-def is_running():
-    try:
-        return open(STATE_FILE).read().strip() == "1"
-    except:
-        return False
-
-
-
-
-
-
-
